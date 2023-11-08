@@ -7,10 +7,12 @@ namespace ASE_Election_Portal_G20.Controllers
     public class HomeController : Controller
     {
         private readonly ILogger<HomeController> _logger;
+        private readonly ElectionPortalG20Context electionPortal;
 
         public HomeController(ILogger<HomeController> logger)
         {
             _logger = logger;
+            this.electionPortal = electionPortal;
         }
 
         public IActionResult Index()

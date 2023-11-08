@@ -1,7 +1,11 @@
+using ASE_Election_Portal_G20.Models;
+using Microsoft.EntityFrameworkCore;
+
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddControllersWithViews();
+builder.Services.AddDbContext<ElectionPortalG20Context>(options => options.UseSqlServer(builder.Configuration.GetConnectionString("constring")));
 
 var app = builder.Build();
 
