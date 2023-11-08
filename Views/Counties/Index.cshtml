@@ -1,0 +1,64 @@
+﻿@model IEnumerable<ASE_Election_Portal_G20.Models.County>
+
+@if (TempData["ErrorMessage"] != null)
+{
+    <div class="alert alert-danger">@TempData["ErrorMessage"]</div>
+}
+
+@{
+    ViewData["Title"] = "Counties";
+    Layout = "~/Views/Shared/Admin_layout.cshtml";
+}
+
+<script>
+    function confirmDelete() {
+        if (confirm("Are you sure you want to delete this record?")) {
+            return true;
+        }
+        return false;
+    }
+</script>
+<div style="display: flex; margin-bottom: 30px">
+    <h2 class="col-md-6">Counties</h2>
+    <p class="col-md-6" style="text-align: right">
+        <a class="btn btn-primary" asp-action="Create">Add County</a>
+    </p>
+</div>
+<div style="display:flex; justify-content:center">
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.CountyName)
+            </th>
+            
+            <th>
+                @Html.DisplayNameFor(model => model.State)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model) {
+        <tr>
+            <td>
+                <a asp-action="Edit" asp-route-id="@item.CountyId">
+                @Html.DisplayFor(modelItem => item.CountyName)
+                </a>
+            </td>
+            
+            <td>
+                @Html.DisplayFor(modelItem => item.State.StateName)
+            </td>
+                    <td>
+                        <form id="delete-form" method="post" action="@Url.Action("Delete", new { id = item.CountyId })">
+                            @Html.AntiForgeryToken()
+                            <input type="submit" value="Delete" onclick="return confirmDelete()" class="btn btn-danger" />
+                        </form>
+                    </td>
+            
+        </tr>
+}
+    </tbody>
+</table>
+</div>

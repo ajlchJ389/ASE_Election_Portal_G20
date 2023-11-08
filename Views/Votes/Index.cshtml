@@ -1,0 +1,53 @@
+﻿@model IEnumerable<ASE_Election_Portal_G20.Models.Vote>
+
+
+@{
+    ViewData["Title"] = "Voting Results";
+    Layout = "~/Views/Shared/Admin_layout.cshtml";
+}
+
+
+<div style="display: flex; margin-bottom: 30px">
+    <h2 class="col-md-6">Voting Results</h2>
+
+</div>
+<div style="display:flex; justify-content:center">
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.IsDeleted)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Candidate)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Election)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Voter)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.IsDeleted)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Candidate.CandidateId)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Election.ElectionId)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Voter.VoterId)
+            </td>
+         
+        </tr>
+}
+    </tbody>
+</table>
+</div>
