@@ -1,39 +1,35 @@
 ﻿@model ASE_Election_Portal_G20.Models.Position
 
 @{
-    ViewData["Title"] = "Create";
+    ViewData["Title"] = "Add Position";
 }
 
-<h1>Create</h1>
-
-<h4>Position</h4>
+<div>
+    <a asp-action="Index">Back to List</a>
+    <h2 style="text-align: center">Add Position</h2>
+</div>
 <hr />
 <div class="row">
-    <div class="col-md-4">
+    <div class="center-align">
         <form asp-action="Create">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-            <div class="form-group">
-                <label asp-for="PositionName" class="control-label"></label>
+            <div class="form-group d-flex">
+                <label asp-for="PositionName" class="col-md-5 control-label required"></label>
+                <div>
                 <input asp-for="PositionName" class="form-control" />
                 <span asp-validation-for="PositionName" class="text-danger"></span>
+                </div>
             </div>
-            <div class="form-group">
-                <label asp-for="ElectionTypeId" class="control-label"></label>
+            <div class="form-group d-flex">
+                <label asp-for="ElectionTypeId" class="col-md-5 control-label required"></label>
                 <select asp-for="ElectionTypeId" class ="form-control" asp-items="ViewBag.ElectionTypeId"></select>
             </div>
-            <div class="form-group form-check">
-                <label class="form-check-label">
-                    <input class="form-check-input" asp-for="IsDeleted" /> @Html.DisplayNameFor(model => model.IsDeleted)
-                </label>
-            </div>
-            <div class="form-group">
-                <input type="submit" value="Create" class="btn btn-primary" />
+           
+            <div style="text-align: center;margin-top:20px">
+                <input type="submit" value="Add Position" class="btn btn-primary" />
             </div>
         </form>
     </div>
 </div>
 
-<div>
-    <a asp-action="Index">Back to List</a>
-</div>
 

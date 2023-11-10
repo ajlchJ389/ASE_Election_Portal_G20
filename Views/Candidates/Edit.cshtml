@@ -1,106 +1,111 @@
 ﻿@model ASE_Election_Portal_G20.Models.Candidate
 
 @{
-    ViewData["Title"] = "Edit";
+    ViewData["Title"] = "Edit Candidate Details";
+    Layout = "~/Views/Shared/Admin_layout.cshtml";
 }
-
-<h1>Edit</h1>
-
-<h4>Candidate</h4>
-<hr />
-<div class="row">
-    <div class="col-md-4">
-        <form asp-action="Edit">
-            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-            <input type="hidden" asp-for="CandidateId" />
-            <div class="form-group">
-                <label asp-for="UserId" class="control-label"></label>
-                <select asp-for="UserId" class="form-control" asp-items="ViewBag.UserId"></select>
-                <span asp-validation-for="UserId" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="FirstName" class="control-label"></label>
-                <input asp-for="FirstName" class="form-control" />
-                <span asp-validation-for="FirstName" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="LastName" class="control-label"></label>
-                <input asp-for="LastName" class="form-control" />
-                <span asp-validation-for="LastName" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="Dob" class="control-label"></label>
-                <input asp-for="Dob" class="form-control" />
-                <span asp-validation-for="Dob" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="State" class="control-label"></label>
-                <select asp-for="State" class="form-control" asp-items="ViewBag.State"></select>
-                <span asp-validation-for="State" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="County" class="control-label"></label>
-                <select asp-for="County" class="form-control" asp-items="ViewBag.County"></select>
-                <span asp-validation-for="County" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="Address" class="control-label"></label>
-                <input asp-for="Address" class="form-control" />
-                <span asp-validation-for="Address" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="PoliticalParty" class="control-label"></label>
-                <input asp-for="PoliticalParty" class="form-control" />
-                <span asp-validation-for="PoliticalParty" class="text-danger"></span>
-            </div>
-            <div class="form-group form-check">
-                <label class="form-check-label">
-                    <input class="form-check-input" asp-for="IsVerified" /> @Html.DisplayNameFor(model => model.IsVerified)
-                </label>
-            </div>
-            <div class="form-group form-check">
-                <label class="form-check-label">
-                    <input class="form-check-input" asp-for="IsRejected" /> @Html.DisplayNameFor(model => model.IsRejected)
-                </label>
-            </div>
-            <div class="form-group form-check">
-                <label class="form-check-label">
-                    <input class="form-check-input" asp-for="Approved" /> @Html.DisplayNameFor(model => model.Approved)
-                </label>
-            </div>
-            <div class="form-group">
-                <label asp-for="Email" class="control-label"></label>
-                <input asp-for="Email" class="form-control" />
-                <span asp-validation-for="Email" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="ContactNumber" class="control-label"></label>
-                <input asp-for="ContactNumber" class="form-control" />
-                <span asp-validation-for="ContactNumber" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="NominatedPositionId" class="control-label"></label>
-                <select asp-for="NominatedPositionId" class="form-control" asp-items="ViewBag.NominatedPositionId"></select>
-                <span asp-validation-for="NominatedPositionId" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="ElectionTypeId" class="control-label"></label>
-                <select asp-for="ElectionTypeId" class="form-control" asp-items="ViewBag.ElectionTypeId"></select>
-                <span asp-validation-for="ElectionTypeId" class="text-danger"></span>
-            </div>
-            <div class="form-group form-check">
-                <label class="form-check-label">
-                    <input class="form-check-input" asp-for="IsDeleted" /> @Html.DisplayNameFor(model => model.IsDeleted)
-                </label>
-            </div>
-            <div class="form-group">
-                <input type="submit" value="Save" class="btn btn-primary" />
-            </div>
-        </form>
-    </div>
-</div>
 
 <div>
     <a asp-action="Index">Back to List</a>
+    <h2 style="text-align: center">Edit Candidate Details</h2>
 </div>
+<hr />
+<div class="row">
+    <div class="center-align">
+        <form asp-action="Edit">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <input type="hidden" asp-for="CandidateId" />
+            
+            <div class="form-group d-flex">
+                <label asp-for="FirstName" class="col-md-5 control-label required"></label>
+                <div>
+                <input asp-for="FirstName" class="form-control" />
+                <span asp-validation-for="FirstName" class="text-danger"></span>
+                </div>
+            </div>
+            <div class="form-group d-flex">
+                <label asp-for="LastName" class="col-md-5 control-label required"></label>
+            <div>
+                <input asp-for="LastName" class="form-control" />
+                <span asp-validation-for="LastName" class="text-danger"></span>
+                </div>
+            </div>
+            <div class="form-group d-flex">
+                <label asp-for="Dob" class="col-md-5 control-label required"></label>
+            <div>
+                <input asp-for="Dob" class="form-control" />
+                <span asp-validation-for="Dob" class="text-danger"></span>
+                </div>
+            </div>
+            <div class="form-group d-flex">
+                <label asp-for="State" class="col-md-5 control-label required"></label>
+                <select asp-for="State" class="form-control" asp-items="ViewBag.State"></select>
+                <span asp-validation-for="State" class="text-danger"></span>
+            </div>
+            <div class="form-group d-flex">
+                <label asp-for="County" class="col-md-5 control-label required"></label>
+                <select asp-for="County" class="form-control" asp-items="ViewBag.County"></select>
+                <span asp-validation-for="County" class="text-danger"></span>
+            </div>
+            <div class="form-group d-flex">
+                <label asp-for="Address" class="col-md-5 control-label required"></label>
+            <div>
+                <input asp-for="Address" class="form-control" />
+                <span asp-validation-for="Address" class="text-danger"></span>
+                </div>
+            </div>
+            <div class="form-group d-flex">
+                <label asp-for="PoliticalParty" class="col-md-5 control-label required"></label>
+            <div>
+                <input asp-for="PoliticalParty" class="form-control" />
+                <span asp-validation-for="PoliticalParty" class="text-danger"></span>
+                </div>
+            </div>
+           
+            <div class="form-group d-flex">
+                <label asp-for="Email" class="col-md-5 control-label required"></label>
+            <div>
+                <input asp-for="Email" class="form-control" />
+                <span asp-validation-for="Email" class="text-danger"></span>
+                </div>
+            </div>
+            <div class="form-group d-flex">
+                <label asp-for="ContactNumber" class="col-md-5 control-label required"></label>
+            <div>
+                <input asp-for="ContactNumber" class="form-control" />
+                <span asp-validation-for="ContactNumber" class="text-danger"></span>
+                </div>
+            </div>
+            <div class="form-group d-flex">
+                <label asp-for="ElectionTypeId" class="col-md-5 control-label required"></label>
+                <select asp-for="ElectionTypeId" class="form-control" asp-items="ViewBag.ElectionTypeId"></select>
+                <span asp-validation-for="ElectionTypeId" class="text-danger"></span>
+            </div>
+            <div class="form-group d-flex">
+                <label asp-for="NominatedPositionId" class="col-md-5 control-label required"></label>
+                <select asp-for="NominatedPositionId" class="form-control" asp-items="ViewBag.NominatedPositionId"></select>
+                <span asp-validation-for="NominatedPositionId" class="text-danger"></span>
+            </div>
+            
+           
+            <div style="text-align: center;margin-top:20px">
+                <input type="submit" value="Save" class="btn btn-primary" />
+                <!-- Approve Button -->
+                @if (!Model.IsVerified && !Model.Approved)
+                {
+                    <button type="submit" name="approve" value="true" class="btn btn-success">Approve</button>
+                }
 
+                <!-- Reject Button -->
+                @if (!Model.IsRejected)
+                {
+                    <button type="submit" name="reject" value="true" class="btn btn-danger">Reject</button>
+                }
+            </div>
+        </form>
+        <!-- Documents Link -->
+        <div style="text-align: center; margin-top: 20px">
+            <a asp-action="Documents">Documents</a>
+        </div>
+    </div>
+</div>

@@ -48,6 +48,9 @@
             <th>
                 @Html.DisplayNameFor(model => model.Position)
             </th>
+                <th>
+                    Status
+                </th>
             <th></th>
         </tr>
     </thead>
@@ -64,10 +67,10 @@
             </td>
             
             <td>
-                @Html.DisplayFor(modelItem => item.StartDate)
+                        @item.StartDate.ToString("MM-dd-yyyy")
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.EndDate)
+                        @item.EndDate.ToString("MM-dd-yyyy")
             </td>
             
             <td>
@@ -77,10 +80,31 @@
                 @Html.DisplayFor(modelItem => item.Position.PositionName)
             </td>
                     <td>
-                        <form id="delete-form" method="post" action="@Url.Action("Delete", new { id = item.ElectionId })">
-                            @Html.AntiForgeryToken()
-                            <input type="submit" value="Delete" onclick="return confirmDelete()" class="btn btn-danger" />
-                        </form>
+                        @if (item.StartDate > DateTime.Now)
+                        {
+                            <span class="text-warning">Election has not yet started</span>
+                        }
+                        else if (item.EndDate < DateTime.Now)
+                        {
+                            <span class="text-danger">Election is closed</span>
+                        }
+                        else
+                        {
+                            <span class="text-success">Election is live</span>
+                        }
+                    </td>
+                    <td>
+                        @if (item.StartDate < DateTime.Now || item.EndDate < DateTime.Now)
+                        {
+                            <a class="btn btn-primary" asp-controller="Votes" asp-action="Index">View Results</a>
+                        }
+                        else
+                        {
+                            <form id="delete-form" method="post" action="@Url.Action("Delete", new { id = item.ElectionId })">
+                                @Html.AntiForgeryToken()
+                                <input type="submit" value="Delete" onclick="return confirmDelete()" class="btn btn-danger" />
+                            </form>
+                        }
                     </td>
         </tr>
 }

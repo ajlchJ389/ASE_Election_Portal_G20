@@ -1,36 +1,33 @@
 ﻿@model ASE_Election_Portal_G20.Models.State
 
 @{
-    ViewData["Title"] = "Edit";
+    ViewData["Title"] = "Edit State";
+    Layout = "~/Views/Shared/Admin_layout.cshtml";
 }
 
-<h1>Edit</h1>
-
-<h4>State</h4>
+<div>
+    <a asp-action="Index">Back to List</a>
+    <h2 style="text-align: center">Edit State</h2>
+</div>
 <hr />
 <div class="row">
-    <div class="col-md-4">
+    <div class="center-align">
         <form asp-action="Edit">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <input type="hidden" asp-for="StateId" />
-            <div class="form-group">
-                <label asp-for="StateName" class="control-label"></label>
+            <div class="form-group d-flex">
+                <label asp-for="StateName" class="col-md-5 control-label required"></label>
+            <div>
                 <input asp-for="StateName" class="form-control" />
                 <span asp-validation-for="StateName" class="text-danger"></span>
+                </div>
             </div>
-            <div class="form-group form-check">
-                <label class="form-check-label">
-                    <input class="form-check-input" asp-for="IsDeleted" /> @Html.DisplayNameFor(model => model.IsDeleted)
-                </label>
-            </div>
-            <div class="form-group">
+           
+            <div style="text-align: center;margin-top:20px">
                 <input type="submit" value="Save" class="btn btn-primary" />
             </div>
         </form>
     </div>
 </div>
 
-<div>
-    <a asp-action="Index">Back to List</a>
-</div>
 

@@ -19,10 +19,30 @@ namespace ASE_Election_Portal_G20.Controllers
         }
 
         // GET: Votes
-        public async Task<IActionResult> Index()
+        public IActionResult Index()
         {
-            var electionPortalG20Context = _context.Votes.Include(v => v.Candidate).Include(v => v.Election).Include(v => v.Voter);
-            return View(await electionPortalG20Context.ToListAsync());
+            ViewBag.Elections = _context.Elections.ToList();
+            ViewBag.States = _context.States.ToList();
+
+            return View();
+        }
+
+        [HttpPost]
+        public IActionResult ViewResults(int electionId, int stateId)
+        {
+            var results = _context.Votes
+                .Include(v => v.Candidate)
+                .Where(v => v.ElectionId == electionId && v.Candidate.State == stateId)
+                .GroupBy(v => v.Candidate)
+                .Select(group => new ElectionResultsViewModel
+                {
+                    CandidateName = $"{group.Key.FirstName} {group.Key.LastName}",
+                    NumberOfVotes = group.Count()
+                })
+                .OrderByDescending(result => result.NumberOfVotes)
+                .ToList();
+
+            return View(results);
         }
     }
 

@@ -1,61 +1,87 @@
 ﻿@model ASE_Election_Portal_G20.Models.Election
 
 @{
-    ViewData["Title"] = "Edit";
+    ViewData["Title"] = "Edit Election";
+    Layout = "~/Views/Shared/Admin_layout.cshtml";
 }
-
-<h1>Edit</h1>
-
-<h4>Election</h4>
+<div>
+    <a asp-action="Index">Back to List</a>
+    <h2 style="text-align: center">Edit Election Details</h2>
+</div>
 <hr />
 <div class="row">
-    <div class="col-md-4">
+    <div class="center-align">
         <form asp-action="Edit">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <input type="hidden" asp-for="ElectionId" />
-            <div class="form-group">
-                <label asp-for="ElectionYear" class="control-label"></label>
+            <div class="form-group d-flex">
+                <label asp-for="ElectionYear" class="col-md-5 control-label required"></label>
+            <div>
                 <input asp-for="ElectionYear" class="form-control" />
                 <span asp-validation-for="ElectionYear" class="text-danger"></span>
+                </div>
             </div>
-            <div class="form-group">
-                <label asp-for="ElectionTypeId" class="control-label"></label>
+            <div class="form-group d-flex">
+                <label asp-for="ElectionTypeId" class="col-md-5 control-label required"></label>
                 <select asp-for="ElectionTypeId" class="form-control" asp-items="ViewBag.ElectionTypeId"></select>
                 <span asp-validation-for="ElectionTypeId" class="text-danger"></span>
             </div>
-            <div class="form-group">
-                <label asp-for="PositionId" class="control-label"></label>
+            <div class="form-group d-flex">
+                <label asp-for="PositionId" class="col-md-5 control-label required"></label>
                 <select asp-for="PositionId" class="form-control" asp-items="ViewBag.PositionId"></select>
                 <span asp-validation-for="PositionId" class="text-danger"></span>
             </div>
-            <div class="form-group">
-                <label asp-for="Description" class="control-label"></label>
+            <div class="form-group d-flex">
+                <label asp-for="Description" class="col-md-5 control-label required"></label>
+            <div>
                 <input asp-for="Description" class="form-control" />
                 <span asp-validation-for="Description" class="text-danger"></span>
+                </div>
             </div>
-            <div class="form-group">
-                <label asp-for="StartDate" class="control-label"></label>
-                <input asp-for="StartDate" class="form-control" />
+            <div class="form-group d-flex">
+                <label asp-for="StartDate" class="col-md-5 control-label required"></label>
+            <div>
+                <input asp-for="StartDate" class="form-control" type="date" />
                 <span asp-validation-for="StartDate" class="text-danger"></span>
+                </div>
             </div>
-            <div class="form-group">
-                <label asp-for="EndDate" class="control-label"></label>
-                <input asp-for="EndDate" class="form-control" />
+            <div class="form-group d-flex">
+                <label asp-for="EndDate" class="col-md-5 control-label required"></label>
+            <div>
+                <input asp-for="EndDate" class="form-control" type="date" />
                 <span asp-validation-for="EndDate" class="text-danger"></span>
+                </div>
             </div>
-            <div class="form-group form-check">
-                <label class="form-check-label">
-                    <input class="form-check-input" asp-for="IsDeleted" /> @Html.DisplayNameFor(model => model.IsDeleted)
-                </label>
-            </div>
-            <div class="form-group">
+           
+            <div style="text-align: center;margin-top:20px">
                 <input type="submit" value="Save" class="btn btn-primary" />
             </div>
         </form>
     </div>
 </div>
 
-<div>
-    <a asp-action="Index">Back to List</a>
-</div>
 
+@section Scripts {
+    <script>
+        // Custom client-side validation to ensure Start Date is greater than current date and End Date is greater than Start Date
+        $(document).ready(function () {
+            $("form").on("submit", function () {
+                var startDate = new Date($("input[name='StartDate']").val());
+                var endDate = new Date($("input[name='EndDate']").val());
+                var currentDate = new Date();
+
+                if (startDate <= currentDate) {
+                    alert("Start Date must be greater than the current date.");
+                    return false;
+                }
+
+                if (endDate <= startDate) {
+                    alert("End Date must be greater than the Start Date.");
+                    return false;
+                }
+
+                return true;
+            });
+        });
+    </script>
+}

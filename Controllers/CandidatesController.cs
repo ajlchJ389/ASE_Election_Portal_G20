@@ -51,7 +51,7 @@ namespace ASE_Election_Portal_G20.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("CandidateId,UserId,FirstName,LastName,Dob,State,County,Address,PoliticalParty,IsVerified,IsRejected,Approved,Email,ContactNumber,NominatedPositionId,ElectionTypeId,IsDeleted")] Candidate candidate)
+        public async Task<IActionResult> Edit(int id, [Bind("CandidateId,UserId,FirstName,LastName,Dob,State,County,Address,PoliticalParty,IsVerified,IsRejected,Approved,Email,ContactNumber,NominatedPositionId,ElectionTypeId,IsDeleted")] Candidate candidate, bool approve, bool reject)
         {
             if (id != candidate.CandidateId)
             {
@@ -61,7 +61,18 @@ namespace ASE_Election_Portal_G20.Controllers
             
                 try
                 {
-                    _context.Update(candidate);
+                if (approve)
+                {
+                    // Handle approval logic
+                    candidate.IsVerified = true;
+                    candidate.Approved = true;
+                }
+                else if (reject)
+                {
+                    // Handle rejection logic
+                    candidate.IsRejected = true;
+                }
+                _context.Update(candidate);
                     await _context.SaveChangesAsync();
                 }
                 catch (DbUpdateConcurrencyException)
@@ -83,17 +94,26 @@ namespace ASE_Election_Portal_G20.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            if (_context.Candidates == null)
+            try
             {
-                return Problem("Entity set 'ElectionPortalG20Context.Candidates'  is null.");
+
+
+                if (_context.Candidates == null)
+                {
+                    return Problem("Entity set 'ElectionPortalG20Context.Candidates'  is null.");
+                }
+                var candidate = await _context.Candidates.FindAsync(id);
+                if (candidate != null)
+                {
+                    _context.Candidates.Remove(candidate);
+                }
+
+                await _context.SaveChangesAsync();
             }
-            var candidate = await _context.Candidates.FindAsync(id);
-            if (candidate != null)
+            catch(Exception)
             {
-                _context.Candidates.Remove(candidate);
+                TempData["ErrorMessage"] = "Cannot delete the record as there are some references associated with it";
             }
-            
-            await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
 

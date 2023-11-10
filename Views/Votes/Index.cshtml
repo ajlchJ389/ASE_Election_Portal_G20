@@ -1,53 +1,51 @@
-﻿@model IEnumerable<ASE_Election_Portal_G20.Models.Vote>
+﻿@model List<ElectionResultsViewModel>
 
+<h2>View Election Results</h2>
 
-@{
-    ViewData["Title"] = "Voting Results";
-    Layout = "~/Views/Shared/Admin_layout.cshtml";
+@using (Html.BeginForm("Index", "Votes", FormMethod.Post))
+{
+    <div class="form-group">
+        <label for="electionId">Select Election:</label>
+        <select class="form-control" id="electionId" name="electionId">
+            @foreach (var election in ViewBag.Elections)
+            {
+                <option value="@election.ElectionID">@election.ElectionYear</option>
+            }
+        </select>
+    </div>
+
+    <div class="form-group">
+        <label for="stateId">Select State:</label>
+        <select class="form-control" id="stateId" name="stateId">
+            @foreach (var state in ViewBag.States)
+            {
+                <option value="@state.StateID">@state.StateName</option>
+            }
+        </select>
+    </div>
+
+    <button type="submit" class="btn btn-primary">View Results</button>
 }
 
+@if (Model != null)
+{
+    <h3>Results:</h3>
 
-<div style="display: flex; margin-bottom: 30px">
-    <h2 class="col-md-6">Voting Results</h2>
-
-</div>
-<div style="display:flex; justify-content:center">
-<table class="table">
-    <thead>
-        <tr>
-            <th>
-                @Html.DisplayNameFor(model => model.IsDeleted)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Candidate)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Election)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Voter)
-            </th>
-            <th></th>
-        </tr>
-    </thead>
-    <tbody>
-@foreach (var item in Model) {
-        <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.IsDeleted)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Candidate.CandidateId)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Election.ElectionId)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Voter.VoterId)
-            </td>
-         
-        </tr>
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Candidate Name</th>
+                <th>Number of Votes</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var result in Model)
+            {
+                <tr>
+                    <td>@result.CandidateName</td>
+                    <td>@result.NumberOfVotes</td>
+                </tr>
+            }
+        </tbody>
+    </table>
 }
-    </tbody>
-</table>
-</div>

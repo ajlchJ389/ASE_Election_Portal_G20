@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 
 namespace ASE_Election_Portal_G20.Models;
 
@@ -7,6 +8,7 @@ public partial class State
 {
     public int StateId { get; set; }
 
+    [Display(Name = "State")]
     public string StateName { get; set; } = null!;
 
     public bool IsDeleted { get; set; }

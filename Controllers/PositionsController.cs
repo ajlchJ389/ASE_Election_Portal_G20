@@ -101,17 +101,26 @@ namespace ASE_Election_Portal_G20.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            if (_context.Positions == null)
+            try
             {
-                return Problem("Entity set 'ElectionPortalG20Context.Positions'  is null.");
+
+
+                if (_context.Positions == null)
+                {
+                    return Problem("Entity set 'ElectionPortalG20Context.Positions'  is null.");
+                }
+                var position = await _context.Positions.FindAsync(id);
+                if (position != null)
+                {
+                    _context.Positions.Remove(position);
+                }
+
+                await _context.SaveChangesAsync();
             }
-            var position = await _context.Positions.FindAsync(id);
-            if (position != null)
+            catch (Exception)
             {
-                _context.Positions.Remove(position);
+                TempData["ErrorMessage"] = "Cannot delete the record as there are some references associated with it";
             }
-            
-            await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
 
