@@ -1,25 +1,13 @@
-﻿@model IEnumerable<ASE_Election_Portal_G20.Models.Voter>
+﻿@model IEnumerable<ASE_Election_Portal_G20.Models.Candidate>
 
-@if (TempData["ErrorMessage"] != null)
-{
-    <div class="alert alert-danger">@TempData["ErrorMessage"]</div>
-}
 
 @{
-    ViewData["Title"] = "Voters";
-    Layout = "~/Views/Shared/Admin_layout.cshtml";
+    ViewData["Title"] = "Candidate List";
+    Layout = "~/Views/Shared/Voter_layout.cshtml";
 }
 
-<script>
-    function confirmDelete() {
-        if (confirm("Are you sure you want to delete this record?")) {
-            return true;
-        }
-        return false;
-    }
-</script>
 <div style="display: flex; margin-bottom: 30px">
-    <h2 class="col-md-6">Voters</h2>
+    <h2 class="col-md-6">Candidate List</h2>
 </div>
 <div style="display:flex; justify-content:center">
 <table class="table">
@@ -36,19 +24,26 @@
                 @Html.DisplayNameFor(model => model.Address)
             </th>
             <th>
+                @Html.DisplayNameFor(model => model.PoliticalParty)
+            </th>
+            <th>
                 @Html.DisplayNameFor(model => model.Email)
             </th>
             <th>
                 @Html.DisplayNameFor(model => model.ContactNumber)
             </th>
-            
             <th>
                 @Html.DisplayNameFor(model => model.CountyNavigation)
             </th>
             <th>
+                @Html.DisplayNameFor(model => model.ElectionType)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.NominatedPosition)
+            </th>
+            <th>
                 @Html.DisplayNameFor(model => model.StateNavigation)
             </th>
-            
             <th></th>
         </tr>
     </thead>
@@ -56,16 +51,17 @@
 @foreach (var item in Model) {
         <tr>
             <td>
-                <a asp-action="Edit" asp-route-id="@item.VoterId">
-                @item.FirstName @item.LastName
-                </a>
+                            @Html.DisplayFor(modelItem => item.FirstName + item.LastName)
             </td>
-           
+  
             <td>
-                        @item.Dob.ToString("MM-dd-yyyy")
+                        @Html.DisplayFor(modelItem => item.Dob.ToString("MM-dd-yyyy"))
             </td>
             <td>
                 @Html.DisplayFor(modelItem => item.Address)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.PoliticalParty)
             </td>
             <td>
                 @Html.DisplayFor(modelItem => item.Email)
@@ -78,15 +74,16 @@
                 @Html.DisplayFor(modelItem => item.CountyNavigation.CountyName)
             </td>
             <td>
+                @Html.DisplayFor(modelItem => item.ElectionType.ElectionTypeName)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.NominatedPosition.PositionName)
+            </td>
+            <td>
                 @Html.DisplayFor(modelItem => item.StateNavigation.StateName)
             </td>
-            
-                    <td>
-                        <form id="delete-form" method="post" action="@Url.Action("Delete", new { id = item.VoterId })">
-                            @Html.AntiForgeryToken()
-                            <input type="submit" value="Delete" onclick="return confirmDelete()" class="btn btn-danger" />
-                        </form>
-                    </td>
+
+                   
         </tr>
 }
     </tbody>

@@ -1,51 +1,155 @@
-﻿@model List<ElectionResultsViewModel>
+﻿@using System.Security.Claims;
+@model List<ElectionResultsViewModel>
 
-<h2>View Election Results</h2>
 
+@{
+    var userRoleClaim = User.FindFirst(ClaimTypes.Role);
+    if (userRoleClaim != null)
+    {
+        string userRole = userRoleClaim.Value;
+
+        if (userRole == "Admin")
+        {
+            Layout = "~/Views/Shared/Admin_layout.cshtml";
+        }
+        else if (userRole == "Voter")
+        {
+            Layout = "~/Views/Shared/Voter_layout.cshtml";
+        }
+        else
+        {
+            Layout = "~/Views/Shared/Candidate_layout.cshtml";
+        }
+    }
+    else
+    {
+        Layout = "~/Views/Shared/Voter_layout.cshtml";
+    }
+    ViewData["Title"] = "Election Results";
+}
+
+<div>
+    <h2 style="text-align: center">View Election Results</h2>
+</div>
+<hr />
+<div class="row">
+    <div class="center-align">
 @using (Html.BeginForm("Index", "Votes", FormMethod.Post))
 {
-    <div class="form-group">
-        <label for="electionId">Select Election:</label>
-        <select class="form-control" id="electionId" name="electionId">
-            @foreach (var election in ViewBag.Elections)
-            {
-                <option value="@election.ElectionID">@election.ElectionYear</option>
-            }
-        </select>
+    <div class="form-group d-flex">
+                <label class="col-md-5 control-label " for="electionId">Select Election:</label>
+                <select class="form-control" id="electionId" name="electionId">
+                    <option value="-" selected>- Select Election -</option>
+                    @foreach (var election in ViewBag.Elections)
+                    {
+                        <option value="@election.ElectionId" data-election-type="@election.ElectionType.ElectionTypeName">
+                            @($"{election.ElectionYear} - {election.ElectionType.ElectionTypeName} - {election.Description}")
+                        </option>
+                    }
+                </select>
+
     </div>
 
-    <div class="form-group">
-        <label for="stateId">Select State:</label>
+    <div class="form-group" id="stateDropdown">
+                <label class="col-md-5 control-label " for="stateId">Select State:</label>
         <select class="form-control" id="stateId" name="stateId">
             @foreach (var state in ViewBag.States)
             {
-                <option value="@state.StateID">@state.StateName</option>
+                <option value="@state.StateId">@state.StateName</option>
             }
         </select>
     </div>
 
-    <button type="submit" class="btn btn-primary">View Results</button>
+    <div class="form-group" id="countyDropdown">
+                <label class="col-md-5 control-label " for="countyId">Select County:</label>
+        <select class="form-control" id="countyId" name="countyId">
+            @foreach (var county in ViewBag.Counties)
+            {
+                <option value="@county.CountyId">@county.CountyName</option>
+            }
+        </select>
+    </div>
+
+            <div style="text-align: center;margin-top:20px">
+                <input type="submit" value="View Results" class="btn btn-primary" />
+            </div>
 }
+</div>
+</div>
 
 @if (Model != null)
 {
-    <h3>Results:</h3>
+    @if (TempData["ErrorMessage"] != null)
+    {
+        <div class="alert alert-danger" style="margin-top: 20px">@TempData["ErrorMessage"]</div>
+    }
+    else
+    {
 
-    <table class="table">
-        <thead>
-            <tr>
-                <th>Candidate Name</th>
-                <th>Number of Votes</th>
-            </tr>
-        </thead>
-        <tbody>
-            @foreach (var result in Model)
-            {
+
+        <h3>Results:</h3>
+
+        <div style="display:flex; justify-content:center">
+<table class="table">
+            <thead>
                 <tr>
-                    <td>@result.CandidateName</td>
-                    <td>@result.NumberOfVotes</td>
+                    <th>Candidate Name</th>
+                    <th>State</th>
+                    <th>County</th>
+                    <th>Nominated Position</th>
+                    <th>Number of Votes</th>
                 </tr>
-            }
-        </tbody>
-    </table>
+            </thead>
+            <tbody>
+                @foreach (var result in Model)
+                {
+                    <tr>
+                        <td>@result.CandidateName</td>
+                        <td>@result.State</td>
+                        <td>@result.County</td>
+                        <td>@result.Position</td>
+                        <td>@result.NumberOfVotes</td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+        </div>
+    }
+}
+@section scripts {
+    <script>
+        $(document).ready(function () {
+            // Hide state and county dropdowns initially
+            $('#stateDropdown').hide();
+            $('#countyDropdown').hide();
+            $('#stateDropdown').removeClass('d-flex');
+            $('#countyDropdown').removeClass('d-flex');
+
+            // Handle change event of the election dropdown
+            $('#electionId').change(function () {
+                var selectedType = $(this).find(':selected').data('election-type');
+
+                // Show/hide state and county dropdowns based on the election type
+                if (selectedType === 'State') {
+                    $('#stateDropdown').show();
+                    $('#stateDropdown').addClass('d-flex');
+                    $('#countyDropdown').hide();
+                    $('#countyDropdown').removeClass('d-flex');
+                } else if (selectedType === 'Local') {
+                    $('#stateDropdown').hide();
+                    $('#stateDropdown').removeClass('d-flex');
+                    $('#countyDropdown').show();
+                    $('#countyDropdown').addClass('d-flex');
+
+                } else {
+                    // Hide both if not 'State' or 'Local'
+                    $('#stateDropdown').hide();
+                    $('#countyDropdown').hide();
+                    $('#stateDropdown').removeClass('d-flex');
+                    $('#countyDropdown').removeClass('d-flex');
+                }
+            });
+        });
+    </script>
+
 }

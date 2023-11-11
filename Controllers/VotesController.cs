@@ -6,9 +6,11 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using ASE_Election_Portal_G20.Models;
+using Microsoft.AspNetCore.Authorization;
 
 namespace ASE_Election_Portal_G20.Controllers
 {
+    [Authorize(Roles = "Admin, Voter, Candidate")]
     public class VotesController : Controller
     {
         private readonly ElectionPortalG20Context _context;
@@ -21,30 +23,57 @@ namespace ASE_Election_Portal_G20.Controllers
         // GET: Votes
         public IActionResult Index()
         {
-            ViewBag.Elections = _context.Elections.ToList();
+            ViewBag.Elections = _context.Elections.Include(e => e.ElectionType).ToList();
             ViewBag.States = _context.States.ToList();
-
+            ViewBag.Counties = _context.Counties.ToList();
             return View();
         }
 
         [HttpPost]
-        public IActionResult ViewResults(int electionId, int stateId)
+        public IActionResult Index(int electionId, int? stateId, int? countyId)
         {
-            var results = _context.Votes
+            TempData["ErrorMessage"] = null;
+            ViewBag.Elections = _context.Elections.Include(e => e.ElectionType).ToList();
+            ViewBag.States = _context.States.ToList();
+            ViewBag.Counties = _context.Counties.ToList();
+            DateTime currentDate = DateTime.Now;
+
+            var query = _context.Votes
                 .Include(v => v.Candidate)
-                .Where(v => v.ElectionId == electionId && v.Candidate.State == stateId)
+                .Where(v => v.ElectionId == electionId &&
+                            _context.Elections.Any(e => e.ElectionId == v.ElectionId && e.EndDate < currentDate));
+
+            if (stateId.HasValue)
+            {
+                query = query.Where(v => v.Candidate.State == stateId);
+            }
+
+            if (countyId.HasValue)
+            {
+                query = query.Where(v => v.Candidate.County == countyId);
+            }
+
+            var results = query
                 .GroupBy(v => v.Candidate)
                 .Select(group => new ElectionResultsViewModel
                 {
                     CandidateName = $"{group.Key.FirstName} {group.Key.LastName}",
+                    State = group.Key.StateNavigation.StateName,
+                    County = group.Key.CountyNavigation.CountyName,
+                    Position = group.Key.NominatedPosition.PositionName,
                     NumberOfVotes = group.Count()
                 })
                 .OrderByDescending(result => result.NumberOfVotes)
                 .ToList();
+            if (results.Count == 0)
+            {
+                TempData["ErrorMessage"] = "No Results available as the election is either live or has not yet started.";
+            }
 
             return View(results);
         }
+
     }
 
-        
+
 }

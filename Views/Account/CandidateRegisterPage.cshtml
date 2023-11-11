@@ -1,0 +1,159 @@
+﻿@{
+    ViewData["Title"] = "Candidate Registration";
+    Layout = null; // Set the Layout property to null
+}
+
+<!DOCTYPE html>
+<html>
+<head>
+    <title>@ViewData["Title"]</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
+    <style>
+        /* Custom CSS for the form */
+        body {
+            background-color: #f5f5f5;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+
+        .container {
+            background-color: white;
+            padding: 20px;
+            border-radius: 5px;
+            box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.2);
+            text-align: center;
+        }
+
+        .form-group {
+            margin: 0;
+            padding: 10px;
+            display: flex;
+            align-items: center;
+        }
+
+        label {
+            font-weight: bold;
+            width: 30%;
+        }
+
+        .form-control {
+            width: 50%;
+        }
+
+        .text-center {
+            text-align: center;
+            justify-content: center;
+        }
+
+        .register-btn {
+            background-color: green;
+            color: white;
+            padding: 10px 30px;
+            font-size: 20px;
+            border: none;
+            cursor: pointer;
+            border-radius: 10px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        @if (TempData["ErrorMessage"] != null)
+        {
+            <div class="alert alert-danger">@TempData["ErrorMessage"]</div>
+        }
+        <h2 class="text-center">Candidate Registration</h2>
+        <form asp-action="CandidateRegister" method="post">
+            <div class="form-group">
+                <label class="required" for="FirstName">First Name:</label>
+                <input type="text" id="FirstName" name="FirstName" class="form-control" required />
+            </div>
+
+            <div class="form-group">
+                <label class="required" for="LastName">Last Name:</label>
+                <input type="text" id="LastName" name="LastName" class="form-control" required />
+            </div>
+
+            <div class="form-group">
+                <label class="required" for="DOB">Date of Birth:</label>
+                <input type="date" id="DOB" name="DOB" class="form-control" required />
+            </div>
+
+            <div class="form-group">
+                <label class="required" for="State">State:</label>
+                <select id="State" name="State" class="form-control" required>
+                    <option value=""> - Select State - </option>
+                    @foreach (var state in ViewBag.States)
+                    {
+                        <option value="@state.StateId">@state.StateName</option>
+                    }
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label class="required" for="County">County:</label>
+                <select id="County" name="County" class="form-control" required>
+                    <option value=""> - Select County - </option>
+                    @foreach (var county in ViewBag.Counties)
+                    {
+                        <option value="@county.CountyId">@county.CountyName</option>
+                    }
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label class="required" for="Address">Address:</label>
+                <input type="text" id="Address" name="Address" class="form-control" required />
+            </div>
+
+            <div class="form-group">
+                <label class="required" for="Email">Email:</label>
+                <input type="email" id="Email" name="Email" class="form-control" required />
+                <div class="invalid-feedback">Please enter a valid email address.</div>
+
+            </div>
+
+            <div class="form-group">
+                <label class="required" for="ContactNumber">Contact Number:</label>
+                <input type="text" id="ContactNumber" name="ContactNumber" class="form-control" pattern="\d{10}" required placeholder="(123) 456-7890" />
+                <div class="invalid-feedback">Please enter a 10-digit contact number.</div>
+
+            </div>
+            <div class="form-group">
+                <label class="required" for="PoliticalParty">Political Party:</label>
+                <input type="text" id="PoliticalParty" name="PoliticalParty" class="form-control" required />
+            </div>
+
+            <div class="form-group">
+                <label class="required" for="ElectionTypeId">Election Type:</label>
+                <select id="ElectionTypeId" name="ElectionTypeId" class="form-control" required>
+                    <option value=""> - Select Election Type - </option>
+
+                    @foreach (var electiontype in ViewBag.ElectionTypes)
+                    {
+                        <option value="@electiontype.ElectionTypeId">@electiontype.ElectionTypeName</option>
+                    }
+                </select>
+            </div>
+            <div class="form-group">
+                <label class="required" for="NominatedPositionId">Position of Nomination:</label>
+                <select id="NominatedPositionId" name="NominatedPositionId" class="form-control" required>
+                    <option value=""> - Select Position - </option>
+                    @foreach (var position in ViewBag.Positions)
+                    {
+                        <option value="@position.PositionId">@position.PositionName</option>
+                    }
+                </select>
+            </div>
+
+          
+
+            <div class="form-group text-center">
+                <button type="submit" class="register-btn">Register</button>
+            </div>
+        </form>
+    </div>
+</body>
+</html>

@@ -14,7 +14,7 @@
         <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3">
             <div class="container-fluid">
                 <img src="~/images/vote.png" style="height: 50px" />
-                <a class="navbar-brand" style="font-size: 24px; font-weight: bold" asp-area="" asp-controller="Voters" asp-action="Index">Online Election Portal</a>
+                <a class="navbar-brand" style="font-size: 24px; font-weight: bold" asp-area="" asp-controller="Candidates" asp-action="CandidateList">Online Election Portal</a>
                 <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target=".navbar-collapse" aria-controls="navbarSupportedContent"
                         aria-expanded="false" aria-label="Toggle navigation">
                     <span class="navbar-toggler-icon"></span>
@@ -22,39 +22,15 @@
                 <div style ="margin-left: 200px"  class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
                     <ul class="navbar-nav flex-grow-1">
                         <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Elections" asp-action="Index">Elections</a>
+                            <a class="nav-link text-dark" asp-area="" asp-controller="Candidates" asp-action="CandidateList">Candidates</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Votes" asp-action="Index">Results</a>
+                            <a class="nav-link text-dark" asp-area="" asp-controller="Votes" asp-action="Index">Elections</a>
                         </li>
-                        <li class="nav-item nav-bar">
-                            <div class="dropdown">
-                                <button class="dropbtn">
-                                    Users
-                                    <i class="fa fa-caret-down"></i>
-                                </button>
-                                <div class="dropdown-content">
-                                    <a class="nav-link text-dark" asp-area="" asp-controller="Voters" asp-action="Index">Voters</a>
-                                    <a class="nav-link text-dark" asp-area="" asp-controller="Candidates" asp-action="Index">Candidates</a>
-                                    <a class="nav-link text-dark" asp-area="" asp-controller="Admins" asp-action="Index">Admins</a>
-
-                                </div>
-                            </div>
+                        <li class="nav-item">
+                            <a class="nav-link text-dark" asp-area="" asp-controller="Votes" asp-action="Index">Election Results</a>
                         </li>
-                        <li class="nav-item nav-bar">
-                            <div class="dropdown">
-                                <button class="dropbtn">
-                                    Master Data
-                                    <i class="fa fa-caret-down"></i>
-                                </button>
-                                <div class="dropdown-content">
-                                    <a class="nav-link text-dark" asp-area="" asp-controller="ElectionTypes" asp-action="Index">Election Types</a>
-                                    <a class="nav-link text-dark" asp-area="" asp-controller="Positions" asp-action="Index">Positions</a>
-                                    <a class="nav-link text-dark" asp-area="" asp-controller="States" asp-action="Index">States</a>
-                                    <a class="nav-link text-dark" asp-area="" asp-controller="Counties" asp-action="Index">Counties</a>
-                                </div>
-                            </div>
-                        </li>
+                     
                         <li class="nav-item">
                             <div>
                             

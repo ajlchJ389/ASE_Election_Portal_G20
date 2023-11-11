@@ -2,6 +2,8 @@
 
 @{
     ViewData["Title"] = "Add Election Type";
+    Layout = "~/Views/Shared/Admin_layout.cshtml";
+
 }
 
 <div>
@@ -16,7 +18,7 @@
             <div class="form-grou d-flexp">
                 <label asp-for="ElectionTypeName" class="col-md-5 control-label required"></label>
                 <div>
-                <input asp-for="ElectionTypeName" class="form-control" />
+                    <input asp-for="ElectionTypeName" class="form-control" required />
                 <span asp-validation-for="ElectionTypeName" class="text-danger"></span>
                 </div>
             </div>

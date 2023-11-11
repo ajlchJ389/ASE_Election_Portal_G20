@@ -1,7 +1,6 @@
 ﻿
-
 @{
-    ViewData["Title"] = "Admin Login";
+    ViewData["Title"] = "Registration Success";
     Layout = null; // Set the Layout property to null
 
 }
@@ -59,30 +58,32 @@
             cursor: pointer;
             border-radius: 10px;
         }
+        .login-btn:hover{
+            color: white;
+            text-decoration: none;
+        }
+
+     
     </style>
 </head>
 <body>
     <div class="container">
-        @if (TempData["ErrorMessage"] != null)
-        {
-            <div class="alert alert-danger">@TempData["ErrorMessage"]</div>
-        }
-        <h2 class="text-center">Admin Login</h2>
-        <form asp-action="AdminLogin" method="post">
-            <div class="form-group">
-                <label for="Username" class="required">Username:</label>
-                <input type="text" id="Username" name="Username" class="form-control" required />
+        
+            <h2>@ViewBag.SuccessMessage</h2>
+        <div class="form-group text-center">
+            <label for="Username" class="required"> Your Username:  @ViewBag.GeneratedUsername</label>
+            
+            <p style="font-size: 20px"></p>
             </div>
+        <div class="form-group text-center">
+            <label for="Username" class="required"> Your Password:  @ViewBag.GeneratedPassword</label>
 
-            <div class="form-group">
-                <label for="Password" class="required">Password:</label>
-                <input type="password" id="Password" name="Password" class="form-control" required />
-            </div>
+            <p style="font-size: 20px"></p>
+        </div>
 
             <div class="form-group text-center ">
-                <button type="submit" class="login-btn">Login</button>
+            <a class="login-btn" asp-area="" asp-controller="Account" asp-action="VoterLoginPage">Login</a>
             </div>
-        </form>
     </div>
 </body>
 </html>

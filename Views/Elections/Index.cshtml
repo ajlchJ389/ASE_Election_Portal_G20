@@ -82,23 +82,23 @@
                     <td>
                         @if (item.StartDate > DateTime.Now)
                         {
-                            <span class="text-warning">Election has not yet started</span>
+                            <div class="alert alert-warning"> Election has not yet started </div>
                         }
                         else if (item.EndDate < DateTime.Now)
                         {
-                            <span class="text-danger">Election is closed</span>
+                            <div class="alert alert-danger"> Election is closed </div>
                         }
                         else
                         {
-                            <span class="text-success">Election is live</span>
+                            <div class="alert alert-success"> Election is live </div>
                         }
                     </td>
                     <td>
-                        @if (item.StartDate < DateTime.Now || item.EndDate < DateTime.Now)
+                        @if (item.EndDate < DateTime.Now)
                         {
                             <a class="btn btn-primary" asp-controller="Votes" asp-action="Index">View Results</a>
                         }
-                        else
+                        else if (item.StartDate > DateTime.Now)
                         {
                             <form id="delete-form" method="post" action="@Url.Action("Delete", new { id = item.ElectionId })">
                                 @Html.AntiForgeryToken()

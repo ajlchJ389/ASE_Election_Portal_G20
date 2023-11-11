@@ -2,6 +2,8 @@
 
 @{
     ViewData["Title"] = "Add Position";
+    Layout = "~/Views/Shared/Admin_layout.cshtml";
+
 }
 
 <div>
@@ -16,13 +18,13 @@
             <div class="form-group d-flex">
                 <label asp-for="PositionName" class="col-md-5 control-label required"></label>
                 <div>
-                <input asp-for="PositionName" class="form-control" />
+                    <input asp-for="PositionName" class="form-control" required />
                 <span asp-validation-for="PositionName" class="text-danger"></span>
                 </div>
             </div>
             <div class="form-group d-flex">
                 <label asp-for="ElectionTypeId" class="col-md-5 control-label required"></label>
-                <select asp-for="ElectionTypeId" class ="form-control" asp-items="ViewBag.ElectionTypeId"></select>
+                <select asp-for="ElectionTypeId" class="form-control" asp-items="ViewBag.ElectionTypeId" required><option value=""> - Select ELection Type - </option></select>
             </div>
            
             <div style="text-align: center;margin-top:20px">

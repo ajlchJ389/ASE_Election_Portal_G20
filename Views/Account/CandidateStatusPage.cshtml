@@ -1,7 +1,5 @@
-﻿
-
-@{
-    ViewData["Title"] = "Admin Login";
+﻿@{
+    ViewData["Title"] = "Check Status of your Application";
     Layout = null; // Set the Layout property to null
 
 }
@@ -26,7 +24,7 @@
             padding: 20px;
             border-radius: 5px;
             box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.2);
-            text-align: center; 
+            text-align: center;
         }
 
         .form-group {
@@ -38,11 +36,11 @@
 
         label {
             font-weight: bold;
-            width: 30%; 
+            width: 30%;
         }
 
         .form-control {
-            width: 50%; 
+            width: 50%;
         }
 
         .text-center {
@@ -67,20 +65,38 @@
         {
             <div class="alert alert-danger">@TempData["ErrorMessage"]</div>
         }
-        <h2 class="text-center">Admin Login</h2>
-        <form asp-action="AdminLogin" method="post">
+        <h2 class="text-center">Candidate Status</h2>
+        <form asp-action="CandidateSuccess" method="post">
             <div class="form-group">
-                <label for="Username" class="required">Username:</label>
-                <input type="text" id="Username" name="Username" class="form-control" required />
+                <label class="required" for="FirstName">First Name:</label>
+                <input type="text" id="FirstName" name="FirstName" class="form-control" required />
             </div>
 
             <div class="form-group">
-                <label for="Password" class="required">Password:</label>
-                <input type="password" id="Password" name="Password" class="form-control" required />
+                <label class="required" for="LastName">Last Name:</label>
+                <input type="text" id="LastName" name="LastName" class="form-control" required />
+            </div>
+
+            <div class="form-group">
+                <label class="required" for="DOB">Date of Birth:</label>
+                <input type="date" id="DOB" name="DOB" class="form-control" required />
+            </div>
+            <div class="form-group">
+                <label class="required" for="Email">Email:</label>
+                <input type="email" id="Email" name="Email" class="form-control" required />
+                <div class="invalid-feedback">Please enter a valid email address.</div>
+
+            </div>
+
+            <div class="form-group">
+                <label class="required" for="ContactNumber">Contact Number:</label>
+                <input type="text" id="ContactNumber" name="ContactNumber" class="form-control" pattern="\d{10}" required placeholder="(123) 456-7890" />
+                <div class="invalid-feedback">Please enter a 10-digit contact number.</div>
+
             </div>
 
             <div class="form-group text-center ">
-                <button type="submit" class="login-btn">Login</button>
+                <button type="submit" class="login-btn">Check Status</button>
             </div>
         </form>
     </div>

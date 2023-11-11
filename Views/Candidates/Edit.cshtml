@@ -1,13 +1,58 @@
-﻿@model ASE_Election_Portal_G20.Models.Candidate
+﻿@using System.Security.Claims;
+@model ASE_Election_Portal_G20.Models.Candidate
 
 @{
-    ViewData["Title"] = "Edit Candidate Details";
-    Layout = "~/Views/Shared/Admin_layout.cshtml";
+    
+    var userRoleClaim = User.FindFirst(ClaimTypes.Role);
+    if (userRoleClaim != null)
+    {
+        string userRole1 = userRoleClaim.Value;
+
+        if (userRole1 == "Admin")
+        {
+            Layout = "~/Views/Shared/Admin_layout.cshtml";
+            ViewData["Title"] = "Edit Candidate Details";
+        }
+        else if (userRole1 == "Candidate")
+        {
+            Layout = "~/Views/Shared/Candidate_layout.cshtml";
+            ViewData["Title"] = "Edit My Details";
+        }
+        else
+        {
+            Layout = "~/Views/Shared/Voter_layout.cshtml";
+            ViewData["Title"] = "Edit Candidate Details";
+        }
+    }
+    else
+    {
+        Layout = "~/Views/Shared/Voter_layout.cshtml";
+        ViewData["Title"] = "Edit Candidate Details";
+    }
 }
 
 <div>
     <a asp-action="Index">Back to List</a>
-    <h2 style="text-align: center">Edit Candidate Details</h2>
+   
+        @{
+
+            string userRole = userRoleClaim.Value;
+
+            if (userRole == "Candidate")
+            {
+            <h2 style="text-align: center">
+                Edit My Details</h2>
+        }
+        else
+        {
+            <h2 style="text-align: center">
+                Edit Candidate Details
+            </h2>
+        }
+
+           
+
+        }
 </div>
 <hr />
 <div class="row">
@@ -15,97 +60,117 @@
         <form asp-action="Edit">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <input type="hidden" asp-for="CandidateId" />
-            
+            <input type="hidden" asp-for="UserId" />
             <div class="form-group d-flex">
-                <label asp-for="FirstName" class="col-md-5 control-label required"></label>
+                <label asp-for="FirstName" class="col-md-5 control-label required">First Name</label>
                 <div>
-                <input asp-for="FirstName" class="form-control" />
+                    <input asp-for="FirstName" class="form-control" required />
                 <span asp-validation-for="FirstName" class="text-danger"></span>
                 </div>
             </div>
             <div class="form-group d-flex">
                 <label asp-for="LastName" class="col-md-5 control-label required"></label>
             <div>
-                <input asp-for="LastName" class="form-control" />
+                    <input asp-for="LastName" class="form-control" required />
                 <span asp-validation-for="LastName" class="text-danger"></span>
                 </div>
             </div>
             <div class="form-group d-flex">
                 <label asp-for="Dob" class="col-md-5 control-label required"></label>
             <div>
-                <input asp-for="Dob" class="form-control" />
+                    <input asp-for="Dob" class="form-control" type="date" required />
                 <span asp-validation-for="Dob" class="text-danger"></span>
                 </div>
             </div>
             <div class="form-group d-flex">
                 <label asp-for="State" class="col-md-5 control-label required"></label>
-                <select asp-for="State" class="form-control" asp-items="ViewBag.State"></select>
+                <select asp-for="State" class="form-control" asp-items="ViewBag.State" required><option value=""> - Select State - </option></select>
                 <span asp-validation-for="State" class="text-danger"></span>
             </div>
             <div class="form-group d-flex">
                 <label asp-for="County" class="col-md-5 control-label required"></label>
-                <select asp-for="County" class="form-control" asp-items="ViewBag.County"></select>
+                <select asp-for="County" class="form-control" asp-items="ViewBag.County" required><option value=""> - Select County - </option></select>
                 <span asp-validation-for="County" class="text-danger"></span>
             </div>
             <div class="form-group d-flex">
                 <label asp-for="Address" class="col-md-5 control-label required"></label>
             <div>
-                <input asp-for="Address" class="form-control" />
+                    <input asp-for="Address" class="form-control" required />
                 <span asp-validation-for="Address" class="text-danger"></span>
                 </div>
             </div>
             <div class="form-group d-flex">
                 <label asp-for="PoliticalParty" class="col-md-5 control-label required"></label>
             <div>
-                <input asp-for="PoliticalParty" class="form-control" />
+                    <input asp-for="PoliticalParty" class="form-control" required />
                 <span asp-validation-for="PoliticalParty" class="text-danger"></span>
                 </div>
             </div>
-           
+            <input type="hidden" asp-for="IsVerified" />
+            <input type="hidden" asp-for="IsRejected" />
+            <input type="hidden" asp-for="Approved" />
             <div class="form-group d-flex">
                 <label asp-for="Email" class="col-md-5 control-label required"></label>
             <div>
-                <input asp-for="Email" class="form-control" />
+                    <input asp-for="Email" type="email" class="form-control" required />
                 <span asp-validation-for="Email" class="text-danger"></span>
+                    <div class="invalid-feedback">Please enter a valid email address.</div>
                 </div>
             </div>
             <div class="form-group d-flex">
                 <label asp-for="ContactNumber" class="col-md-5 control-label required"></label>
             <div>
-                <input asp-for="ContactNumber" class="form-control" />
+                    <input asp-for="ContactNumber" class="form-control" pattern="\d{10}" required placeholder="(123) 456-7890" />
                 <span asp-validation-for="ContactNumber" class="text-danger"></span>
+                    <div class="invalid-feedback">Please enter a 10-digit contact number.</div>
                 </div>
             </div>
             <div class="form-group d-flex">
                 <label asp-for="ElectionTypeId" class="col-md-5 control-label required"></label>
-                <select asp-for="ElectionTypeId" class="form-control" asp-items="ViewBag.ElectionTypeId"></select>
+                <select asp-for="ElectionTypeId" class="form-control" asp-items="ViewBag.ElectionTypeId" required><option value=""> - Select Election Type - </option></select>
                 <span asp-validation-for="ElectionTypeId" class="text-danger"></span>
             </div>
             <div class="form-group d-flex">
                 <label asp-for="NominatedPositionId" class="col-md-5 control-label required"></label>
-                <select asp-for="NominatedPositionId" class="form-control" asp-items="ViewBag.NominatedPositionId"></select>
+                <select asp-for="NominatedPositionId" class="form-control" asp-items="ViewBag.NominatedPositionId" required><option value=""> - Select Position - </option></select>
                 <span asp-validation-for="NominatedPositionId" class="text-danger"></span>
             </div>
-            
-           
-            <div style="text-align: center;margin-top:20px">
-                <input type="submit" value="Save" class="btn btn-primary" />
-                <!-- Approve Button -->
-                @if (!Model.IsVerified && !Model.Approved)
-                {
-                    <button type="submit" name="approve" value="true" class="btn btn-success">Approve</button>
-                }
+            <input type="hidden" asp-for="IsDeleted" />
+            @{
 
-                <!-- Reject Button -->
-                @if (!Model.IsRejected)
+
+                if (userRole == "Admin")
                 {
-                    <button type="submit" name="reject" value="true" class="btn btn-danger">Reject</button>
+                    <div style="text-align: center; margin-top: 10px;">
+                        <a asp-action="Documents"  class="btn btn-link">Documents</a>
+                    </div>
+                    <div style="text-align: center;margin-top:20px">
+                        <input type="submit" value="Save" class="btn btn-primary" />
+                        <!-- Approve Button -->
+                        @if (!Model.IsVerified && !Model.Approved && !Model.IsRejected)
+                        {
+                            <button type="submit" name="approve" value="true" class="btn btn-success">Approve</button>
+                        }
+                        @if (!Model.IsVerified && Model.Approved && !Model.IsRejected)
+                        {
+                            <button type="submit" name="verify" value="true" class="btn btn-success">Verify Details</button>
+                        }
+
+                        <!-- Reject Button -->
+                        @if (!Model.IsVerified && !Model.Approved && !Model.IsRejected)
+                        {
+                            <button type="submit" name="reject" value="true" class="btn btn-danger">Reject</button>
+                        }
+                    </div>
+                        
                 }
-            </div>
+             
+
+
+
+            }
+
+           
         </form>
-        <!-- Documents Link -->
-        <div style="text-align: center; margin-top: 20px">
-            <a asp-action="Documents">Documents</a>
-        </div>
     </div>
 </div>

@@ -17,38 +17,38 @@
             <div class="form-group d-flex">
                 <label asp-for="ElectionYear" class="col-md-5 control-label required"></label>
             <div>
-                <input asp-for="ElectionYear" class="form-control" />
+                    <input asp-for="ElectionYear" class="form-control" required />
                 <span asp-validation-for="ElectionYear" class="text-danger"></span>
                 </div>
             </div>
             <div class="form-group d-flex">
                 <label asp-for="ElectionTypeId" class="col-md-5 control-label required"></label>
-                <select asp-for="ElectionTypeId" class="form-control" asp-items="ViewBag.ElectionTypeId"></select>
+                <select asp-for="ElectionTypeId" class="form-control" asp-items="ViewBag.ElectionTypeId" required><option value=""> - Select Election Type - </option></select>
                 <span asp-validation-for="ElectionTypeId" class="text-danger"></span>
             </div>
             <div class="form-group d-flex">
                 <label asp-for="PositionId" class="col-md-5 control-label required"></label>
-                <select asp-for="PositionId" class="form-control" asp-items="ViewBag.PositionId"></select>
+                <select asp-for="PositionId" class="form-control" asp-items="ViewBag.PositionId" required><option value=""> - Select Position - </option></select>
                 <span asp-validation-for="PositionId" class="text-danger"></span>
             </div>
             <div class="form-group d-flex">
                 <label asp-for="Description" class="col-md-5 control-label required"></label>
             <div>
-                <input asp-for="Description" class="form-control" />
+                    <input asp-for="Description" class="form-control" required />
                 <span asp-validation-for="Description" class="text-danger"></span>
                 </div>
             </div>
             <div class="form-group d-flex">
                 <label asp-for="StartDate" class="col-md-5 control-label required"></label>
             <div>
-                <input asp-for="StartDate" class="form-control" type="date" />
+                    <input asp-for="StartDate" name="StartDate" class="form-control" type="date" required />
                 <span asp-validation-for="StartDate" class="text-danger"></span>
                 </div>
             </div>
             <div class="form-group d-flex">
                 <label asp-for="EndDate" class="col-md-5 control-label required"></label>
             <div>
-                <input asp-for="EndDate" class="form-control" type="date" />
+                    <input asp-for="EndDate" class="form-control" type="date" required />
                 <span asp-validation-for="EndDate" class="text-danger"></span>
                 </div>
             </div>
@@ -82,6 +82,15 @@
 
                 return true;
             });
+            var startDate = new Date($("input[name='StartDate']").val());
+            var saveButton = $("input[type='submit']");
+            var currentDate = new Date();
+                if (startDate > currentDate) {
+                    saveButton.show();
+                } else {
+                    saveButton.hide();
+                }
+         
         });
     </script>
 }

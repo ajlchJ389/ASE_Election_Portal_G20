@@ -1,7 +1,7 @@
 ﻿
 
 @{
-    ViewData["Title"] = "Admin Login";
+    ViewData["Title"] = "Candidate Login";
     Layout = null; // Set the Layout property to null
 
 }
@@ -67,15 +67,15 @@
         {
             <div class="alert alert-danger">@TempData["ErrorMessage"]</div>
         }
-        <h2 class="text-center">Admin Login</h2>
-        <form asp-action="AdminLogin" method="post">
+        <h2 class="text-center">Candidate Login</h2>
+        <form asp-action="CandidateLogin" method="post">
             <div class="form-group">
-                <label for="Username" class="required">Username:</label>
+                <label class="required" for="Username">Username:</label>
                 <input type="text" id="Username" name="Username" class="form-control" required />
             </div>
 
             <div class="form-group">
-                <label for="Password" class="required">Password:</label>
+                <label class="required" for="Password">Password:</label>
                 <input type="password" id="Password" name="Password" class="form-control" required />
             </div>
 

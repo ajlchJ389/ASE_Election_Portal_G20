@@ -10,7 +10,7 @@ using Microsoft.AspNetCore.Authorization;
 
 namespace ASE_Election_Portal_G20.Controllers
 {
-    [Authorize(Roles = "Admin")]
+    
     public class CandidatesController : Controller
     {
         private readonly ElectionPortalG20Context _context;
@@ -20,12 +20,34 @@ namespace ASE_Election_Portal_G20.Controllers
             _context = context;
         }
 
+        [Authorize(Roles = "Voter")]
+        public async Task<IActionResult> CandidateList()
+        {
+            var electionPortalG20Context = _context.Candidates.Include(c => c.CountyNavigation).Include(c => c.ElectionType).Include(c => c.NominatedPosition).Include(c => c.StateNavigation).Include(c => c.User);
+            return View(await electionPortalG20Context.ToListAsync());
+        }
+
+        [Authorize(Roles = "Admin")]
+
         // GET: Candidates
         public async Task<IActionResult> Index()
         {
             var electionPortalG20Context = _context.Candidates.Include(c => c.CountyNavigation).Include(c => c.ElectionType).Include(c => c.NominatedPosition).Include(c => c.StateNavigation).Include(c => c.User);
             return View(await electionPortalG20Context.ToListAsync());
         }
+        [Authorize(Roles = "Admin")]
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Documents(int id)
+        {
+            if (id != 0)
+            {
+                return NotFound();
+            }
+            return View();
+
+        }
+            [Authorize(Roles = "Admin, Candidate")]
         public async Task<IActionResult> Edit(int? id)
         {
             if (id == null || _context.Candidates == null)
@@ -45,13 +67,14 @@ namespace ASE_Election_Portal_G20.Controllers
             ViewData["UserId"] = new SelectList(_context.Users, "UserId", "UserName", candidate.UserId);
             return View(candidate);
         }
+        [Authorize(Roles = "Admin, Candidate")]
 
         // POST: Candidates/Edit/5
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("CandidateId,UserId,FirstName,LastName,Dob,State,County,Address,PoliticalParty,IsVerified,IsRejected,Approved,Email,ContactNumber,NominatedPositionId,ElectionTypeId,IsDeleted")] Candidate candidate, bool approve, bool reject)
+        public async Task<IActionResult> Edit(int id, [Bind("CandidateId,UserId,FirstName,LastName,Dob,State,County,Address,PoliticalParty,IsVerified,IsRejected,Approved,Email,ContactNumber,NominatedPositionId,ElectionTypeId,IsDeleted")] Candidate candidate, bool approve, bool reject, bool verify)
         {
             if (id != candidate.CandidateId)
             {
@@ -61,17 +84,26 @@ namespace ASE_Election_Portal_G20.Controllers
             
                 try
                 {
+                
                 if (approve)
                 {
                     // Handle approval logic
                     candidate.IsVerified = true;
                     candidate.Approved = true;
+                    candidate.IsRejected = false;
                 }
                 else if (reject)
                 {
                     // Handle rejection logic
                     candidate.IsRejected = true;
+                    candidate.IsVerified = false;
+                    candidate.Approved = false;
                 }
+                else if (verify)
+                {
+                    candidate.IsVerified = true;
+                }
+                
                 _context.Update(candidate);
                     await _context.SaveChangesAsync();
                 }
@@ -88,7 +120,8 @@ namespace ASE_Election_Portal_G20.Controllers
                 }
                 return RedirectToAction(nameof(Index));
         }
-
+        
+        [Authorize(Roles = "Admin")]
         // POST: Candidates/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
@@ -116,7 +149,7 @@ namespace ASE_Election_Portal_G20.Controllers
             }
             return RedirectToAction(nameof(Index));
         }
-
+        [Authorize(Roles = "Admin")]
         private bool CandidateExists(int id)
         {
           return (_context.Candidates?.Any(e => e.CandidateId == id)).GetValueOrDefault();

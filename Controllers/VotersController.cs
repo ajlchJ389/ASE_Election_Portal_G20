@@ -63,6 +63,7 @@ namespace ASE_Election_Portal_G20.Controllers
             
                 try
                 {
+               
                     _context.Update(voter);
                     await _context.SaveChangesAsync();
                 }

@@ -1,0 +1,103 @@
+﻿
+@{
+    ViewData["Title"] = "Candidate Registration Status";
+    Layout = null; // Set the Layout property to null
+
+}
+
+<!DOCTYPE html>
+<html>
+<head>
+    <title>@ViewData["Title"]</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
+    <style>
+        /* Custom CSS for the form */
+        body {
+            background-color: #f5f5f5;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+
+        .container {
+            background-color: white;
+            padding: 20px;
+            border-radius: 5px;
+            box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.2);
+            text-align: center; 
+        }
+
+        .form-group {
+            margin: 0;
+            padding: 10px;
+            display: flex;
+            align-items: center;
+        }
+
+        label {
+            font-weight: bold;
+            width: 30%; 
+        }
+
+        .form-control {
+            width: 50%; 
+        }
+
+        .text-center {
+            text-align: center;
+            justify-content: center;
+        }
+
+        .login-btn {
+            background-color: navy;
+            color: white;
+            padding: 10px 30px;
+            font-size: 20px;
+            border: none;
+            cursor: pointer;
+            border-radius: 10px;
+        }
+        .login-btn:hover{
+            color: white;
+            text-decoration: none;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        @{
+            if(ViewBag.Success == true)
+            {
+                <h2>@ViewBag.SuccessMessage</h2>
+                <div class="form-group text-center">
+                    <label for="Username" class="required"> Your Username:  @ViewBag.GeneratedUsername</label>
+
+                    <p style="font-size: 20px"></p>
+                </div>
+                <div class="form-group text-center">
+                    <label for="Username" class="required"> Your Password:  @ViewBag.GeneratedPassword</label>
+
+                    <p style="font-size: 20px"></p>
+                </div>
+
+                <div class="form-group text-center ">
+                    <a class="login-btn" asp-area="" asp-controller="Account" asp-action="CandidateLoginPage">Login</a>
+                </div>
+            }
+            else
+            {
+                
+                    <div class="alert alert-danger"> Thank you for registering with us. Your Account has to be approved by the Admin to get your credentials. Please come back later!</div>
+                
+             
+                <div class="form-group text-center ">
+                    <a class="login-btn" asp-area="" asp-controller="Account" asp-action="CandidateRegisterOrLogin">Main Page</a>
+                </div>
+            }
+        }
+        
+            
+    </div>
+</body>
+</html>

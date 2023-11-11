@@ -15,10 +15,12 @@
         <form asp-action="Edit">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <input type="hidden" asp-for="AdminId" />
+            <input type="hidden" asp-for="UserId" />
+
             <div class="form-group d-flex">
                 <label asp-for="AdminName" class="col-md-5 control-label required"></label>
                 <div>
-                <input asp-for="AdminName" class="form-control" />
+                    <input asp-for="AdminName" class="form-control" required />
                 <span asp-validation-for="AdminName" class="text-danger"></span>
                 </div>
             </div>
