@@ -38,7 +38,7 @@
 {
     <div class="form-group d-flex">
                 <label class="col-md-5 control-label " for="electionId">Select Election:</label>
-                <select class="form-control" id="electionId" name="electionId">
+                <select class="form-control" id="electionId" name="electionId" required>
                     <option value="-" selected>- Select Election -</option>
                     @foreach (var election in ViewBag.Elections)
                     {
@@ -52,7 +52,9 @@
 
     <div class="form-group" id="stateDropdown">
                 <label class="col-md-5 control-label " for="stateId">Select State:</label>
-        <select class="form-control" id="stateId" name="stateId">
+        <select class="form-control" id="stateId" name="stateId" required>
+                    <option value="-" selected>- Select State -</option>
+
             @foreach (var state in ViewBag.States)
             {
                 <option value="@state.StateId">@state.StateName</option>
@@ -62,7 +64,9 @@
 
     <div class="form-group" id="countyDropdown">
                 <label class="col-md-5 control-label " for="countyId">Select County:</label>
-        <select class="form-control" id="countyId" name="countyId">
+        <select class="form-control" id="countyId" name="countyId" required>
+                    <option value="-" selected>- Select County -</option>
+
             @foreach (var county in ViewBag.Counties)
             {
                 <option value="@county.CountyId">@county.CountyName</option>

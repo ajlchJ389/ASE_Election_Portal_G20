@@ -1,0 +1,99 @@
+﻿@model IEnumerable<ASE_Election_Portal_G20.Models.Elections_V>
+
+@if (TempData["ErrorMessage"] != null)
+{
+    <div class="alert alert-danger">@TempData["ErrorMessage"]</div>
+}
+
+@{
+    ViewData["Title"] = "Elections";
+    Layout = "~/Views/Shared/Voter_layout.cshtml";
+}
+
+<div style="display: flex; margin-bottom: 30px">
+    <h2 class="col-md-6">Elections</h2>
+    
+</div>
+<div style="display:flex; justify-content:center">
+<table class="table">
+    <thead>
+        <tr>
+                <th>
+                    @Html.DisplayNameFor(model => model.Description)
+                </th>
+            <th>
+                @Html.DisplayNameFor(model => model.ElectionYear)
+            </th>
+            
+            <th>
+                @Html.DisplayNameFor(model => model.StartDate)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.EndDate)
+            </th>
+      
+            <th>
+                @Html.DisplayNameFor(model => model.ElectionType)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Position)
+            </th>
+                <th>
+                    Status
+                </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model) {
+        <tr>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Description)
+                    </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.ElectionYear)
+            </td>
+            
+            <td>
+                        @item.StartDate.ToString("MM-dd-yyyy")
+            </td>
+            <td>
+                        @item.EndDate.ToString("MM-dd-yyyy")
+            </td>
+            
+            <td>
+                @Html.DisplayFor(modelItem => item.ElectionType.ElectionTypeName)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Position.PositionName)
+            </td>
+                    <td>
+                        @if (item.StartDate > DateTime.Now)
+                        {
+                            <div class="alert alert-warning"> Election has not yet started </div>
+                        }
+                        else if (item.EndDate < DateTime.Now)
+                        {
+                            <div class="alert alert-danger"> Election is closed </div>
+                        }
+                        else
+                        {
+                            <div class="alert alert-success"> Election is live </div>
+                        }
+                    </td>
+                    <td>
+                        @if (item.EndDate < DateTime.Now)
+                        {
+                            <a class="btn btn-primary" asp-controller="Votes" asp-action="Index">View Results</a>
+                        }
+                        else if (item.StartDate <= DateTime.Now && item.EndDate >= DateTime.Now && !item.HasVoted)
+                        {
+                            <a class="btn btn-success" asp-controller="Voters" asp-action="Vote" asp-route-id =@item.ElectionId>Vote</a>
+
+                        }
+                    </td>
+        </tr>
+}
+    </tbody>
+</table>
+</div>

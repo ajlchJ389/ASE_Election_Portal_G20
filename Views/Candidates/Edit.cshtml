@@ -142,7 +142,7 @@
                 if (userRole == "Admin")
                 {
                     <div style="text-align: center; margin-top: 10px;">
-                        <a asp-action="Documents"  class="btn btn-link">Documents</a>
+                        <a asp-action="Documents" asp-route-id=@Model.CandidateId class="btn btn-link">Documents</a>
                     </div>
                     <div style="text-align: center;margin-top:20px">
                         <input type="submit" value="Save" class="btn btn-primary" />

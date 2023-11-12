@@ -220,7 +220,7 @@ namespace ASE_Election_Portal_G20.Controllers
         }
         private string GenerateRandomUsername(string lastName, string phoneNumber)
         {
-            string truncatedLastName = lastName.Length >= 3 ? lastName.Substring(0, 4) : lastName;
+            string truncatedLastName = lastName.Length >= 4 ? lastName.Substring(0, 5) : lastName;
             string truncatedPhoneNumber = phoneNumber.Length >= 3 ? phoneNumber.Substring(phoneNumber.Length - 5) : phoneNumber;
             return $"{truncatedLastName}{truncatedPhoneNumber}";
 
@@ -230,7 +230,7 @@ namespace ASE_Election_Portal_G20.Controllers
         {
             const string chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
             var random = new Random();
-            return new string(Enumerable.Repeat(chars, 6)
+            return new string(Enumerable.Repeat(chars, 8)
                 .Select(s => s[random.Next(s.Length)]).ToArray());
         }
         [HttpPost]
@@ -388,7 +388,8 @@ namespace ASE_Election_Portal_G20.Controllers
                     var claims = new List<Claim>
     {
         new Claim(ClaimTypes.Name, user.User.Username),
-        new Claim(ClaimTypes.Role, user.User.UserType) // Role from the database
+        new Claim(ClaimTypes.Role, user.User.UserType),
+        new Claim("VoterId", user.VoterId.ToString())// Role from the database
     };
 
                     var claimsIdentity = new ClaimsIdentity(claims, CookieAuthenticationDefaults.AuthenticationScheme);
@@ -429,11 +430,14 @@ namespace ASE_Election_Portal_G20.Controllers
                 // Check username and password
                 if (user != null)
                 {
+                    var candidate = _context.Candidates.Include(a => a.User).FirstOrDefault(e => e.UserId == user.UserId);
+
                     // Assign the user's role to a claim for use in authorization
                     var claims = new List<Claim>
     {
         new Claim(ClaimTypes.Name, user.User.Username),
-        new Claim(ClaimTypes.Role, user.User.UserType) // Role from the database
+        new Claim(ClaimTypes.Role, user.User.UserType),
+        new Claim("CandidateId", candidate.CandidateId.ToString()),// Role from the database
     };
 
                     var claimsIdentity = new ClaimsIdentity(claims, CookieAuthenticationDefaults.AuthenticationScheme);
@@ -444,9 +448,9 @@ namespace ASE_Election_Portal_G20.Controllers
 
                     HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, new ClaimsPrincipal(claimsIdentity), authProperties);
 
-                    var candidate = _context.Candidates.Include(a => a.User).FirstOrDefault(e => e.UserId == user.UserId);
+
                     // Redirect to the Admin Dashboard
-                    return RedirectToAction("Edit", "Candidates",new {id = candidate.CandidateId});
+                    return RedirectToAction("MyProfile", "Candidates",new {id = candidate.CandidateId});
                 }
 
             }

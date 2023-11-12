@@ -1,0 +1,125 @@
+﻿@using System.Security.Claims;
+@model ASE_Election_Portal_G20.Models.Candidate
+
+@{
+
+
+    Layout = "~/Views/Shared/Candidate_layout.cshtml";
+    ViewData["Title"] = "My Profile";
+    if (!Model.IsVerified)
+    {
+    <div class="alert alert-danger">Your Profile changes are under review by the Admin. Please wait for the approval to make any further changes.</div>
+    }   
+}
+
+<div>
+
+            <h2 style="text-align: center">Edit My Profile</h2>
+        
+</div>
+<hr />
+<div class="row">
+    <div class="center-align">
+        <form asp-action="MyProfile" id="editForm">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <input type="hidden" asp-for="CandidateId" />
+            <input type="hidden" asp-for="UserId" />
+            <div class="form-group d-flex">
+                <label asp-for="FirstName" class="col-md-5 control-label required">First Name</label>
+                <div>
+                    <input asp-for="FirstName" class="form-control" required />
+                <span asp-validation-for="FirstName" class="text-danger"></span>
+                </div>
+            </div>
+            <div class="form-group d-flex">
+                <label asp-for="LastName" class="col-md-5 control-label required"></label>
+            <div>
+                    <input asp-for="LastName" class="form-control" required />
+                <span asp-validation-for="LastName" class="text-danger"></span>
+                </div>
+            </div>
+            <div class="form-group d-flex">
+                <label asp-for="Dob" class="col-md-5 control-label required"></label>
+            <div>
+                    <input asp-for="Dob" class="form-control" type="date" required />
+                <span asp-validation-for="Dob" class="text-danger"></span>
+                </div>
+            </div>
+            <div class="form-group d-flex">
+                <label asp-for="State" class="col-md-5 control-label required"></label>
+                <select asp-for="State" class="form-control" asp-items="ViewBag.State" required><option value=""> - Select State - </option></select>
+                <span asp-validation-for="State" class="text-danger"></span>
+            </div>
+            <div class="form-group d-flex">
+                <label asp-for="County" class="col-md-5 control-label required"></label>
+                <select asp-for="County" class="form-control" asp-items="ViewBag.County" required><option value=""> - Select County - </option></select>
+                <span asp-validation-for="County" class="text-danger"></span>
+            </div>
+            <div class="form-group d-flex">
+                <label asp-for="Address" class="col-md-5 control-label required"></label>
+            <div>
+                    <input asp-for="Address" class="form-control" required />
+                <span asp-validation-for="Address" class="text-danger"></span>
+                </div>
+            </div>
+            <div class="form-group d-flex">
+                <label asp-for="PoliticalParty" class="col-md-5 control-label required"></label>
+            <div>
+                    <input asp-for="PoliticalParty" class="form-control" required />
+                <span asp-validation-for="PoliticalParty" class="text-danger"></span>
+                </div>
+            </div>
+            <input type="hidden" id="IsVerified" asp-for="IsVerified" />
+            <input type="hidden" asp-for="IsRejected" />
+            <input type="hidden" asp-for="Approved" />
+            <div class="form-group d-flex">
+                <label asp-for="Email" class="col-md-5 control-label required"></label>
+            <div>
+                    <input asp-for="Email" type="email" class="form-control" required />
+                <span asp-validation-for="Email" class="text-danger"></span>
+                    <div class="invalid-feedback">Please enter a valid email address.</div>
+                </div>
+            </div>
+            <div class="form-group d-flex">
+                <label asp-for="ContactNumber" class="col-md-5 control-label required"></label>
+            <div>
+                    <input asp-for="ContactNumber" class="form-control" pattern="\d{10}" required placeholder="(123) 456-7890" />
+                <span asp-validation-for="ContactNumber" class="text-danger"></span>
+                    <div class="invalid-feedback">Please enter a 10-digit contact number.</div>
+                </div>
+            </div>
+            <div class="form-group d-flex">
+                <label asp-for="ElectionTypeId" class="col-md-5 control-label required"></label>
+                <select asp-for="ElectionTypeId" class="form-control" asp-items="ViewBag.ElectionTypeId" required><option value=""> - Select Election Type - </option></select>
+                <span asp-validation-for="ElectionTypeId" class="text-danger"></span>
+            </div>
+            <div class="form-group d-flex">
+                <label asp-for="NominatedPositionId" class="col-md-5 control-label required"></label>
+                <select asp-for="NominatedPositionId" class="form-control" asp-items="ViewBag.NominatedPositionId" required><option value=""> - Select Position - </option></select>
+                <span asp-validation-for="NominatedPositionId" class="text-danger"></span>
+            </div>
+            <input type="hidden" asp-for="IsDeleted" />
+           
+
+             
+                    <div style="text-align: center;margin-top:20px">
+                        <input type="submit" value="Save" class="btn btn-primary" />
+                        
+                    </div>
+                        
+           
+        </form>
+    </div>
+</div>
+
+@section Scripts {
+<script>
+    $(document).ready(function () {
+        var isVerified = $("#IsVerified").val();
+
+        if (isVerified == "False") {
+            $('#editForm :input').prop('disabled', true);
+        }
+    });
+</script>
+}

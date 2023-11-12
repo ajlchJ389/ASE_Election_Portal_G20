@@ -37,7 +37,7 @@ namespace ASE_Election_Portal_G20.Controllers
             ViewBag.States = _context.States.ToList();
             ViewBag.Counties = _context.Counties.ToList();
             DateTime currentDate = DateTime.Now;
-
+             
             var query = _context.Votes
                 .Include(v => v.Candidate)
                 .Where(v => v.ElectionId == electionId &&
@@ -65,7 +65,12 @@ namespace ASE_Election_Portal_G20.Controllers
                 })
                 .OrderByDescending(result => result.NumberOfVotes)
                 .ToList();
-            if (results.Count == 0)
+            if(electionId == 0)
+            {
+                TempData["ErrorMessage"] = "Please select an election before proceeding.";
+
+            }
+            else if (results.Count == 0)
             {
                 TempData["ErrorMessage"] = "No Results available as the election is either live or has not yet started.";
             }

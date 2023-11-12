@@ -1,0 +1,75 @@
+﻿@model ASE_Election_Portal_G20.Models.Election
+
+@{
+    ViewData["Title"] = "Cast your Vote";
+    Layout = "~/Views/Shared/Admin_layout.cshtml";
+}
+<div>
+    <a asp-action="Index">Back to List</a>
+    <h2 style="text-align: center">Cast your Vote</h2>
+</div>
+<hr />
+<div class="row">
+    <div class="center-align">
+        <form id="voteForm" asp-action="Vote" method="post">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            
+            <div class="form-group d-flex">
+                <label class="col-md-5 control-label " for="electionId">Select Election:</label>
+                <select class="form-control" id="electionId" name="electionId" disabled>
+                    @foreach (var election in ViewBag.Elections)
+                    {
+                        <option value="@election.ElectionId" data-election-type="@election.ElectionType.ElectionTypeName">
+                            @($"{election.ElectionYear} - {election.ElectionType.ElectionTypeName} - {election.Description}")
+                        </option>
+                    }
+                </select>
+
+            </div>
+            <div class="form-group d-flex">
+                <label class="col-md-5 control-label " for="voterId">Select Voter:</label>
+                <select class="form-control" id="voterId" name="voterId" disabled>
+                    @foreach (var voter in ViewBag.Voters)
+                    {
+                        <option value="@voter.VoterId">
+                            @($"{voter.FirstName} {voter.LastName}")
+                        </option>
+                    }
+                </select>
+
+            </div>
+            <div class="form-group d-flex">
+                <label class="col-md-5 control-label " for="candidateId">Select Candidate:</label>
+                <select class="form-control" id="candidateId" name="candidateId" required>
+                    <option value="-"> - Select Candidate -</option>
+                    @foreach (var candidate in ViewBag.Candidates)
+                    {
+                        <option value="@candidate.CandidateId">
+                            @($"{candidate.FirstName} {candidate.LastName}")
+                        </option>
+                    }
+                </select>
+
+            </div>
+
+            @if (TempData["ErrorMessage"] != null)
+            {
+                <div class="alert alert-danger">@TempData["ErrorMessage"]</div>
+            }
+            else
+            {
+                <div style="text-align: center;margin-top:20px">
+                    <input type="submit" onclick="submitForm()" value="Vote" class="btn btn-primary" />
+                </div>
+            }
+            
+        </form>
+    </div>
+</div>
+<script>
+    function submitForm() {
+        $("#electionId, #voterId").prop("disabled", false);
+
+        $("#voteForm").submit();
+    }
+</script>

@@ -1,0 +1,82 @@
+﻿@model IEnumerable<ASE_Election_Portal_G20.Models.CandidateDocument>
+@{
+    ViewData["Title"] = "Candidate Documents";
+    Layout = "~/Views/Shared/Candidate_layout.cshtml";
+}
+@if (TempData["ErrorMessage"] != null)
+{
+    <div class="alert alert-danger">@TempData["ErrorMessage"]</div>
+}
+
+<script>
+    function confirmDelete() {
+        if (confirm("Are you sure you want to delete this document?")) {
+            return true;
+        }
+        return false;
+    }
+   
+</script>
+<div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 30px">
+    <h2>Candidate Documents</h2>
+</div>
+<form method="post" enctype="multipart/form-data" action="@Url.Action("UploadDocument", "Candidates")">
+    @Html.AntiForgeryToken()
+    <input type="file" name="uploadedFile" required />
+    <input type="submit" value="Upload" class="btn btn-success" />
+</form>
+<div style="display:flex; justify-content:center">
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.DocumentName)
+            </th>
+           
+            <th>
+                @Html.DisplayNameFor(model => model.CandidateId)
+            </th>
+            
+            <th>Status</th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model) {
+        <tr>
+            <td>
+                 <a href="@Url.Action("DownloadDocument", "Candidates", new { id = item.DocumentId })">@Html.DisplayFor(modelItem => item.DocumentName)</a>
+            </td>
+  
+            <td>
+                        @item.Candidate.FirstName @item.Candidate.LastName
+            </td>
+                    <td>
+                        @{
+                            if (item.IsVerified && !item.IsRejected)
+                            {
+                                <div class="alert alert-success"> Approved </div>
+                            }
+                            else if (!item.IsVerified && !item.IsRejected)
+                            {
+                                <div class="alert alert-warning"> Verification Pending </div>
+                            }
+                            else if (item.IsRejected)
+                            {
+                                <div class="alert alert-danger"> Rejected </div>
+                            }
+                            
+                        }
+                    </td>
+
+                    <td>
+                        <form id="approve-form" method="post" action="@Url.Action("DeleteDoc", new { id = item.DocumentId })">
+                            @Html.AntiForgeryToken()
+                            <input type="submit" value="Delete" onclick="return confirmDelete()" class="btn btn-danger" />
+                        </form>
+                    </td>
+        </tr>
+}
+    </tbody>
+</table>
+</div>

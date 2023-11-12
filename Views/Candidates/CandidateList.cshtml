@@ -9,6 +9,39 @@
 <div style="display: flex; margin-bottom: 30px">
     <h2 class="col-md-6">Candidate List</h2>
 </div>
+<hr />
+<div class="row">
+    <div class="center-align">
+@using (Html.BeginForm("CandidateList", "Candidates", FormMethod.Post))
+{
+    <div class="form-group d-flex">
+                <label class="col-md-5 control-label " for="candidateFilter">Filter Candidates:</label>
+                <select id="candidateFilter" name="candidateFilter" class="form-control">
+                    <option value="" selected>-Select Candidates-</option>
+                    <option value="allCandidates">All Candidates</option>
+                    <option value="stateCandidates">Candidates from My State</option>
+                    <option value="countyCandidates">Candidates from My County</option>
+                </select>
+
+                
+
+    </div>
+            <div style="text-align: center;margin-top:20px">
+                <input type="submit" value="Filter" class="btn btn-primary" />
+            </div>
+    }
+    </div>
+    </div>
+@if (Model != null)
+{
+    @if (TempData["ErrorMessage"] != null)
+    {
+        <div class="alert alert-danger" style="margin-top: 20px">@TempData["ErrorMessage"]</div>
+    }
+    else
+    {
+        <h3>Candidates:</h3>
+
 <div style="display:flex; justify-content:center">
 <table class="table">
     <thead>
@@ -51,11 +84,11 @@
 @foreach (var item in Model) {
         <tr>
             <td>
-                            @Html.DisplayFor(modelItem => item.FirstName + item.LastName)
+                            @item.FirstName @item.LastName
             </td>
   
             <td>
-                        @Html.DisplayFor(modelItem => item.Dob.ToString("MM-dd-yyyy"))
+                        @item.Dob.ToString("MM-dd-yyyy")
             </td>
             <td>
                 @Html.DisplayFor(modelItem => item.Address)
@@ -82,10 +115,15 @@
             <td>
                 @Html.DisplayFor(modelItem => item.StateNavigation.StateName)
             </td>
+            <td>
+                            <a class="btn btn-primary" asp-controller="Candidates" asp-action="candidateDocuments" asp-route-id =@item.CandidateId>Documents</a>
 
+
+            </td>
                    
         </tr>
 }
     </tbody>
 </table>
 </div>
+}}

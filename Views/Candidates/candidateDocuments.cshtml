@@ -1,0 +1,62 @@
+﻿@model IEnumerable<ASE_Election_Portal_G20.Models.CandidateDocument>
+@{
+    ViewData["Title"] = "Candidate Documents";
+    Layout = "~/Views/Shared/Voter_layout.cshtml";
+}
+
+<a asp-action="CandidateList">Back to List</a>
+
+<div style="display: flex; margin-bottom: 30px; justify-content: center">
+    <h2 class="col-md-6">Candidate Documents</h2>
+</div>
+<hr/>
+<div style="display:flex; justify-content:center">
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.DocumentName)
+            </th>
+           
+            <th>
+                @Html.DisplayNameFor(model => model.CandidateId)
+            </th>
+            
+            <th>Status</th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model) {
+        <tr>
+            <td>
+                        <a href="@Url.Action("DownloadDocument", "Candidates", new { id = item.DocumentId })">@Html.DisplayFor(modelItem => item.DocumentName)</a>
+
+            </td>
+  
+            <td>
+                        @item.Candidate.FirstName @item.Candidate.LastName
+            </td>
+                    <td>
+                        @{
+                            if (item.IsVerified && !item.IsRejected)
+                            {
+                                <div class="alert alert-success"> Approved </div>
+                            }
+                            else if (!item.IsVerified && !item.IsRejected)
+                            {
+                                <div class="alert alert-warning"> Verification Pending </div>
+                            }
+                            else if (item.IsRejected)
+                            {
+                                <div class="alert alert-danger"> Rejected </div>
+                            }
+                            
+                        }
+                    </td>
+
+                   
+        </tr>
+}
+    </tbody>
+</table>
+</div>
