@@ -220,7 +220,7 @@ namespace ASE_Election_Portal_G20.Controllers
         }
         private string GenerateRandomUsername(string lastName, string phoneNumber)
         {
-            string truncatedLastName = lastName.Length >= 4 ? lastName.Substring(0, 5) : lastName;
+            string truncatedLastName = lastName.Length >= 5 ? lastName.Substring(0, 4) : lastName;
             string truncatedPhoneNumber = phoneNumber.Length >= 3 ? phoneNumber.Substring(phoneNumber.Length - 5) : phoneNumber;
             return $"{truncatedLastName}{truncatedPhoneNumber}";
 

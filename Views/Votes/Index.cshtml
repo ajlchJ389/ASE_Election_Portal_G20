@@ -97,6 +97,7 @@
 <table class="table">
             <thead>
                 <tr>
+                        <th>Rank</th>
                     <th>Candidate Name</th>
                     <th>State</th>
                     <th>County</th>
@@ -105,14 +106,15 @@
                 </tr>
             </thead>
             <tbody>
-                @foreach (var result in Model)
-                {
-                    <tr>
-                        <td>@result.CandidateName</td>
-                        <td>@result.State</td>
-                        <td>@result.County</td>
-                        <td>@result.Position</td>
-                        <td>@result.NumberOfVotes</td>
+                    @foreach (var result in Model.Select((value, index) => new { Index = index + 1, Value = value }))
+                    {
+                        <tr>
+                        <td>@result.Index</td>
+                        <td>@result.Value.CandidateName</td>
+                        <td>@result.Value.State</td>
+                        <td>@result.Value.County</td>
+                        <td>@result.Value.Position</td>
+                        <td>@result.Value.NumberOfVotes</td>
                     </tr>
                 }
             </tbody>

@@ -24,11 +24,11 @@
             </div>
             <div class="form-group d-flex">
                 <label asp-for="ElectionTypeId" class="col-md-5 control-label required"></label>
-                <select asp-for="ElectionTypeId" class="form-control" asp-items="ViewBag.ElectionTypeId" required><option value=""> - Select Election Type - </option></select>
+                <select id="ElectionTypeId" asp-for="ElectionTypeId" class="form-control" asp-items="ViewBag.ElectionTypeId" required><option value=""> - Select Election Type - </option></select>
             </div>
             <div class="form-group d-flex">
                 <label asp-for="PositionId" class="col-md-5 control-label required"></label>
-                <select asp-for="PositionId" class="form-control" asp-items="ViewBag.PositionId" required><option value=""> - Select Position - </option></select>
+                <select id="PositionId" asp-for="PositionId" class="form-control" asp-items="ViewBag.PositionId" required><option value=""> - Select Position - </option></select>
             </div>
             <div class="form-group d-flex">
                 <label asp-for="Description" class="col-md-5 control-label required"></label>
@@ -79,6 +79,29 @@
                 }
 
                 return true;
+            });
+            $("#ElectionTypeId").change(function () {
+                var selectedElectionTypeId = $(this).val();
+
+                if (selectedElectionTypeId) {
+                    $.getJSON("/Data/GetPositionsByType", { typeId: selectedElectionTypeId })
+                        .done(function (data) {
+                            $("#PositionId").empty();
+
+                            $("#PositionId").append('<option value=""> - Select Position - </option>');
+
+                            $.each(data, function (index, position) {
+                                $("#PositionId").append('<option value="' + position.positionId + '">' + position.positionName + '</option>');
+                            });
+                        })
+                        .fail(function () {
+                            console.log("Error fetching positions.");
+                        });
+                } else {
+                    // If no type is selected, clear the positions dropdown
+                    $("#PositionId").empty();
+                    $("#PositionId").append('<option value=""> - Select Position - </option>');
+                }
             });
         });
     </script>

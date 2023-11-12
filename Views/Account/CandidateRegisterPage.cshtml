@@ -1,6 +1,7 @@
 ﻿@{
     ViewData["Title"] = "Candidate Registration";
-    Layout = null; // Set the Layout property to null
+    Layout = "~/Views/Shared/Main_layout.cshtml";
+
 }
 
 <!DOCTYPE html>
@@ -156,4 +157,59 @@
         </form>
     </div>
 </body>
+
 </html>
+@section Scripts {
+    <script>
+        $(document).ready(function () {
+            
+            $("#State").change(function () {
+                var selectedStateId = $(this).val();
+                if (selectedStateId) {
+                    $.getJSON("/Data/GetCountiesByState", { stateId: selectedStateId })
+                        .done(function (data) {
+                            $("#County").empty();
+
+                            $("#County").append('<option value=""> - Select County - </option>');
+
+                            $.each(data, function (index, County) {
+                                console.log(data);
+
+                                $("#County").append('<option value="' + County.countyId + '">' + County.countyName + '</option>');
+                            });
+                        })
+                        .fail(function () {
+                            console.log("Error fetching counties.");
+                        });
+                } else {
+                    $("#County").empty();
+                    $("#County").append('<option value=""> - Select County - </option>');
+                }
+            });
+            $("#ElectionTypeId").change(function () {
+                var selectedElectionTypeId = $(this).val();
+
+                if (selectedElectionTypeId) {
+                    $.getJSON("/Data/GetPositionsByType", { typeId: selectedElectionTypeId })
+                        .done(function (data) {
+                            $("#NominatedPositionId").empty();
+
+                            $("#NominatedPositionId").append('<option value=""> - Select Position - </option>');
+
+                            $.each(data, function (index, position) {
+                                $("#NominatedPositionId").append('<option value="' + position.positionId + '">' + position.positionName + '</option>');
+                            });
+                        })
+                        .fail(function () {
+                            console.log("Error fetching positions.");
+                        });
+                } else {
+                    // If no type is selected, clear the positions dropdown
+                    $("#NominatedPositionId").empty();
+                    $("#NominatedPositionId").append('<option value=""> - Select Position - </option>');
+                }
+            });
+        });
+
+    </script>
+}

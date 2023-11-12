@@ -1,6 +1,6 @@
 ﻿@{
     ViewData["Title"] = "Voter Registration";
-    Layout = null; // Set the Layout property to null
+    Layout = "~/Views/Shared/Main_layout.cshtml";
 }
 
 <!DOCTYPE html>
@@ -129,3 +129,35 @@
     </div>
 </body>
 </html>
+@section Scripts {
+    <script>
+        $(document).ready(function () {
+
+            $("#State").change(function () {
+                var selectedStateId = $(this).val();
+                if (selectedStateId) {
+                    $.getJSON("/Data/GetCountiesByState", { stateId: selectedStateId })
+                        .done(function (data) {
+                            $("#County").empty();
+
+                            $("#County").append('<option value=""> - Select County - </option>');
+
+                            $.each(data, function (index, County) {
+                                console.log(data);
+
+                                $("#County").append('<option value="' + County.countyId + '">' + County.countyName + '</option>');
+                            });
+                        })
+                        .fail(function () {
+                            console.log("Error fetching counties.");
+                        });
+                } else {
+                    $("#County").empty();
+                    $("#County").append('<option value=""> - Select County - </option>');
+                }
+            });
+            
+        });
+
+    </script>
+}
